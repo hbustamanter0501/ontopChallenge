@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.top.wallet.transaction.application.usecase.CreateWalletTransactionUseCaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-07-27T07:26:17" hostname="DESKTOP-PMQP3MT" time="0.046">
+  <properties/>
+  <testcase name="given a wallet transaction with no balance  then throw error" classname="com.top.wallet.transaction.application.usecase.CreateWalletTransactionUseCaseTest" time="0.046"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
