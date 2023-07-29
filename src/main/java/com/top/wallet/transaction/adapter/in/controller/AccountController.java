@@ -1,6 +1,7 @@
 package com.top.wallet.transaction.adapter.in.controller;
 
 import com.top.wallet.transaction.adapter.in.controller.model.AccountDTO;
+import com.top.wallet.transaction.adapter.in.controller.model.AccountRestModel;
 import com.top.wallet.transaction.adapter.in.controller.model.WalletTransactionDTO;
 import com.top.wallet.transaction.adapter.out.entity.WalletTransactionEntity;
 import com.top.wallet.transaction.application.port.in.CreateAccountCommand;
@@ -28,10 +29,11 @@ public class AccountController {
     @PostMapping()
     @ApiOperation(value = "Create an account")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, response = Account.class, message = "OK"),
+            @ApiResponse(code = 200, response = AccountRestModel.class, message = "OK"),
             @ApiResponse(code = 500, message = "Error creating an account"),
     })
-    public Account createAccount(@RequestBody AccountDTO dto) throws ServiceException {
-        return createAccountCommand.execute(dto);
+    public AccountRestModel createAccount(@RequestBody AccountDTO dto) throws ServiceException {
+        Account account = createAccountCommand.execute(dto);
+        return AccountRestModel.fromDomain(account);
     }
 }

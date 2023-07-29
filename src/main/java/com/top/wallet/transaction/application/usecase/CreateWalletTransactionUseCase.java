@@ -1,6 +1,5 @@
 package com.top.wallet.transaction.application.usecase;
 
-import com.top.wallet.transaction.adapter.in.controller.model.WalletTransactionCommand;
 import com.top.wallet.transaction.adapter.in.controller.model.WalletTransactionDTO;
 import com.top.wallet.transaction.application.exception.NoBalanceException;
 import com.top.wallet.transaction.application.exception.InvalidValueException;
@@ -15,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Locale;
+import java.util.Date;
 import java.util.Objects;
 
 import static java.lang.Math.abs;
@@ -52,17 +51,16 @@ public class CreateWalletTransactionUseCase implements CreateWalletTransactionCo
             throw new InvalidValueException(ErrorCode.AMOUNT_VALUE_NOT_VALID);
         }
 
-        TransactionType transactionType = TransactionType.getType(dto.getAmount());
         Balance balance = this.balanceRestAdapter.retrieveBalance(dto.getUserId());
 
-        if (Objects.equals(transactionType, TransactionType.WITHDRAW) && !hasBalanceForTransaction(balance.getBalance(), dto.getAmount())){
+        if (!hasBalanceForTransaction(balance.getBalance(), dto.getAmount())){
             throw new NoBalanceException(ErrorCode.NO_BALANCE_FOR_TRANSACTION);
         }
 
         WalletTransaction walletTransaction = this.walletTransactionRestAdapter.createTransaction(dto);
 
         walletTransaction = walletTransaction.withStatus(TransactionStatus.CREATED.toString());
-
+        walletTransaction = walletTransaction.withCreationDate(new Date());
         walletTransaction = this.walletTransactionPersistence.save(walletTransaction);
 
         if (Objects.equals(walletTransaction.getTransactionType(), TransactionType.WITHDRAW.toString())){
@@ -70,7 +68,7 @@ public class CreateWalletTransactionUseCase implements CreateWalletTransactionCo
 
             PaymentProvider paymentProvider = this.paymentProviderRestAdapter.createPaymentInProvider(dto);
             walletTransaction = walletTransaction.withFee(abs(dto.getAmount())*ontopTransactionFee);
-            walletTransaction = walletTransaction.withStatus(paymentProvider.getStatus().toUpperCase(Locale.ROOT));
+            walletTransaction = walletTransaction.withStatus(paymentProvider.getStatus().toUpperCase());
             walletTransaction = walletTransaction.withProviderId(paymentProvider.getProviderTransactionId());
 
         }

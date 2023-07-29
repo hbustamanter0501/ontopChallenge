@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
+import java.util.Date;
+
 @Value
 @Builder
 public class WalletTransaction {
@@ -19,4 +21,8 @@ public class WalletTransaction {
     String status;
     @With
     String providerId;
+    @With
+    Date creationDate;
+    @With
+    Date updateDate;
 }

@@ -1,7 +1,6 @@
 package com.top.wallet.transaction.adapter.out.rest.walletTransaction;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.top.wallet.transaction.adapter.in.controller.model.WalletTransactionCommand;
 import com.top.wallet.transaction.adapter.in.controller.model.WalletTransactionDTO;
 import com.top.wallet.transaction.adapter.out.rest.handler.RestTemplateErrorHandler;
 import com.top.wallet.transaction.adapter.out.rest.walletTransaction.model.WalletTransactionRequest;

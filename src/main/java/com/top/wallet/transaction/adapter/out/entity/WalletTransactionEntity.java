@@ -5,8 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 
 @Data
 @Builder
@@ -28,9 +32,11 @@ public class WalletTransactionEntity {
     private String transactionType;
     private String status;
     private String providerId;
+    private Date creationDate;
+    private Date updateDate;
 
 
-    public static WalletTransactionEntity fromDomain (WalletTransaction walletTransaction){
+    public static WalletTransactionEntity toEntity (WalletTransaction walletTransaction){
         return WalletTransactionEntity.builder()
                 .id(walletTransaction.getId())
                 .amount(walletTransaction.getAmount())
@@ -40,6 +46,8 @@ public class WalletTransactionEntity {
                 .transactionType(walletTransaction.getTransactionType())
                 .status(walletTransaction.getStatus())
                 .providerId(walletTransaction.getProviderId())
+                .creationDate(walletTransaction.getCreationDate())
+                .updateDate(walletTransaction.getUpdateDate())
                 .build();
     }
 
@@ -53,6 +61,23 @@ public class WalletTransactionEntity {
                 .transactionType(walletTransactionEntity.getTransactionType())
                 .status(walletTransactionEntity.getStatus())
                 .providerId(walletTransactionEntity.getProviderId())
+                .creationDate(walletTransactionEntity.getCreationDate())
+                .updateDate(walletTransactionEntity.getUpdateDate())
                 .build();
     }
+
+    //Filters for queries
+    public static Specification<WalletTransactionEntity> specAmount(Double amount) {
+        return (RLBOTE, cq, cb) -> cb.equal(RLBOTE.get("amount"), amount);
+    }
+
+    public static Specification<WalletTransactionEntity> specDate(Date date) {
+        return (RLBOTE, cq, cb) -> cb.equal(RLBOTE.get("creationDate"), date);
+    }
+
+
+    public static Specification<WalletTransactionEntity> specUserId(Integer userId) {
+        return (RLBOTE, cq, cb) -> cb.equal(RLBOTE.get("userId"), userId);
+    }
+
 }
