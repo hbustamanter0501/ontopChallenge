@@ -68,16 +68,16 @@ public class WalletTransactionEntity {
 
     //Filters for queries
     public static Specification<WalletTransactionEntity> specAmount(Double amount) {
-        return (RLBOTE, cq, cb) -> cb.equal(RLBOTE.get("amount"), amount);
+        return (root, cq, cb) -> cb.equal(root.get("amount"), amount);
     }
 
     public static Specification<WalletTransactionEntity> specDate(Date date) {
-        return (RLBOTE, cq, cb) -> cb.equal(RLBOTE.get("creationDate"), date);
+        return (root, cq, cb) -> cb.equal(root.get("creationDate"), date);
     }
 
 
     public static Specification<WalletTransactionEntity> specUserId(Integer userId) {
-        return (RLBOTE, cq, cb) -> cb.equal(RLBOTE.get("userId"), userId);
+        return (root, cq, cb) -> cb.equal(root.get("userId"), userId);
     }
 
 }
